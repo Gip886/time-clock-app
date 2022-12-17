@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import dayjs from 'dayjs'
+import { useEffect, useState, useMemo } from 'react'
+import NumberDisplay from './components/NumberDisplay'
+import styles from './styles.module.scss'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const getRandomNumber = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) * min)
 }
 
-export default App;
+function App() {
+  const [time, setTime] = useState<number>(Date.now().valueOf())
+  const [numbeerString, setNumbeerString] = useState<string>('0.123')
+
+  useEffect(() => {
+    setInterval(() => {
+      setTime(Date.now().valueOf())
+    }, 1000)
+  }, [])
+
+  const timeStr = useMemo(() => {
+    return dayjs(time).format('HH:mm:ss')
+  }, [time])
+
+  console.log(timeStr)
+
+  // useEffect(() => {
+  //   setInterval(()=>{
+  //     setNumbeerString(getRandomNumber(100,999).toString())
+  //   },1000)
+  // }, [])
+
+  return (
+    <div className={styles.app}>
+      <NumberDisplay numberString={timeStr} />
+    </div>
+  )
+}
+
+export default App
